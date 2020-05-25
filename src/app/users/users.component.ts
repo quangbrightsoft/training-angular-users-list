@@ -1,7 +1,7 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { UserService } from '../user.service';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatSort } from '@angular/material/sort';
+import { MatSort, Sort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { MessageService } from '../messages.service';
 @Component({
@@ -10,10 +10,8 @@ import { MessageService } from '../messages.service';
   styleUrls: ['./users.component.scss']
 })
 export class UsersComponent implements OnInit, AfterViewInit {
-  columnsToDisplay = ['email', 'fullName', 'roles', 'actions'];
-  @ViewChild(MatSort) sort: MatSort;
+  columnsToDisplay: string[] = ['email', 'fullName', 'roles', 'actions'];
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
   pagingOptions = {
     currentPage: 0,
     pageSize: 10,
@@ -25,7 +23,11 @@ export class UsersComponent implements OnInit, AfterViewInit {
   }
   searchQuery: string;
   dataSource = new MatTableDataSource([]);
-  constructor(private service: UserService) { }
+  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  constructor(private messages: MessageService, private service: UserService) { }
+  ngAfterViewInit(): void {
+  }
   getUsers(): void {
     let params = {
       page: (this.pagingOptions.currentPage + 1).toString(),
@@ -34,6 +36,10 @@ export class UsersComponent implements OnInit, AfterViewInit {
     if (this.searchQuery) {
       Object.assign
         (params, { search: this.searchQuery })
+    }
+    if (this.sortingOptions.sortBy) {
+      Object.assign
+        (params, { descending: this.sortingOptions.desc, sortBy: this.sortingOptions.sortBy })
     }
     this.service.getUsers(params).subscribe(r => {
       this.dataSource.sort = this.sort;
@@ -45,6 +51,8 @@ export class UsersComponent implements OnInit, AfterViewInit {
     );
   }
   ngOnInit(): void {
+
+    this.dataSource.sort = this.sort;
     this.getUsers();
   }
   changePage($event) {
@@ -55,9 +63,18 @@ export class UsersComponent implements OnInit, AfterViewInit {
     this.getUsers();
 
   }
-  sortData($event) {
-    // this.sortingOptions.sortBy = $event.;
-    // this.sortingOptions.pageSize = $event.pageSize;
+  sortData(sort: Sort) {
+    if (!sort.active || sort.direction === '') {
+      this.sortingOptions.desc = sort.direction == 'desc';
+      this.sortingOptions.sortBy = undefined;
+
+      return;
+    }
+    if (sort.direction) {
+      this.sortingOptions.desc = sort.direction == 'desc';
+      this.sortingOptions.sortBy = sort.active;
+    }
+
     this.getUsers();
   }
   deleteRow(row) {
@@ -66,4 +83,9 @@ export class UsersComponent implements OnInit, AfterViewInit {
     }
     );
   }
+  @ViewChild(MatSort) set matSort(ms: MatSort) {
+    this.sort = ms;
+  }
+
+
 }
