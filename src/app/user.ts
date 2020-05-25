@@ -1,4 +1,4 @@
-export interface User {
+export class User {
   createdAt: string
   deletedAt: string
   email: string
@@ -8,7 +8,7 @@ export interface User {
   isDisabled: boolean
   leaves: []
   medicalNote: string
-  personalId: number
+  personalId: string
   roles: string[]
   sex: string
   skillIds: []

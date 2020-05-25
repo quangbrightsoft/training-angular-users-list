@@ -1,3 +1,8 @@
+<a href="/users/edit/0">Create user</a>
+<div>
+  <input id="name" [(ngModel)]="searchQuery" placeholder="Search" />
+  <button class="button" (click)="getUsers()">Search</button>
+</div>
 <div *ngIf="dataSource.data">
   <table matSort (matSortChange)="sortData($event)" mat-table [dataSource]="dataSource">
     <ng-container matColumnDef="email">
@@ -9,7 +14,7 @@
       <td mat-cell *matCellDef="let element"> {{element.fullName}} </td>
     </ng-container>
     <ng-container matColumnDef="roles">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Roles </th>
       <td mat-cell *matCellDef="let element"> {{element.roles}} </td>
     </ng-container>
     <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>

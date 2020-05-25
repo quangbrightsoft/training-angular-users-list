@@ -1,10 +1,8 @@
-import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { UserService } from '../user.service';
-import { User, PagedData } from '../user';
-import { MatTableDataSource, } from '@angular/material/table';
-import { HttpParams } from '@angular/common/http';
+import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
-import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-users',
@@ -25,12 +23,17 @@ export class UsersComponent implements OnInit {
     sortBy: 'email',
     desc: false
   }
+  searchQuery: string;
   dataSource = new MatTableDataSource([]);
   constructor(private service: UserService) { }
   getUsers(): void {
     let params = {
       page: (this.pagingOptions.currentPage + 1).toString(),
-      pageSize: this.pagingOptions.pageSize.toString()
+      pageSize: this.pagingOptions.pageSize.toString(),
+    }
+    if (this.searchQuery) {
+      Object.assign
+        (params, { search: this.searchQuery })
     }
     this.service.getUsers(params).subscribe(r => {
       this.dataSource.sort = this.sort;
