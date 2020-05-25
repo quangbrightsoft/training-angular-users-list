@@ -3,14 +3,14 @@ import { UserService } from '../user.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
-
+import { MessageService } from '../messages.service';
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.scss']
 })
-export class UsersComponent implements OnInit {
-  columnsToDisplay = ['email', 'fullName', 'roles'];
+export class UsersComponent implements OnInit, AfterViewInit {
+  columnsToDisplay = ['email', 'fullName', 'roles', 'actions'];
   @ViewChild(MatSort) sort: MatSort;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -59,5 +59,11 @@ export class UsersComponent implements OnInit {
     // this.sortingOptions.sortBy = $event.;
     // this.sortingOptions.pageSize = $event.pageSize;
     this.getUsers();
+  }
+  deleteRow(row) {
+    this.service.delete(row.id).subscribe(r => {
+      this.messages.add('Delete successful')
+    }
+    );
   }
 }
