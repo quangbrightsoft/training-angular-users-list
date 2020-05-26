@@ -19,10 +19,20 @@
     <label for="name">Roles: </label>
     <div *ngFor="let option of roleOptions">
       <label>
-        <input type="checkbox" name="options" value="{{option.value}}" [(ngModel)]="option.checked" />
+        <input type="checkbox" (change)="checkboxChanged()" name="options" value="{{option.value}}"
+          [(ngModel)]="option.checked" />
         {{option.name}}
       </label>
     </div>
+  </div>
+
+  <div *ngIf="selectedRoles.includes('Patient')">
+    <label for="ssn">SSN: </label>
+    <input id="ssn" [(ngModel)]="currentUser.ssn" placeholder="ssn" />
+  </div>
+  <div *ngIf="selectedRoles.includes('Patient')">
+    <label for="medicalNote">Medical note: </label>
+    <input id="medicalNote" [(ngModel)]="currentUser.medicalNote" placeholder="medicalNote" />
   </div>
   <button (click)="save()">Save</button>
   <button (click)="cancel()">Cancel</button>

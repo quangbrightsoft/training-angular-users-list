@@ -13,11 +13,11 @@ import { FormControl } from '@angular/forms';
 export class UsersComponent implements OnInit, AfterViewInit {
   columnsToDisplay: string[] = ['email', 'fullName', 'roles', 'actions'];
   roleOptions = [
-    { name: 'Admin', value: 'Admin', checked: false },
-    { name: 'Power user', value: 'Power user', checked: false },
-    { name: 'Patient', value: 'Patient', checked: false },
-    { name: 'Doctor', value: 'Doctor', checked: false },
-    { name: 'BMA', value: 'BMA', checked: false },
+    { name: 'Admin', value: 'Admin' },
+    { name: 'Power user', value: 'PowerUser' },
+    { name: 'Patient', value: 'Patient' },
+    { name: 'Doctor', value: 'Doctor' },
+    { name: 'BMA', value: 'BmaSkill' },
   ];
   rolesControl = new FormControl();
   selectedRoleFilter;

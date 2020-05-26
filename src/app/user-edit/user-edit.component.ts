@@ -17,11 +17,12 @@ export class UserEditComponent implements OnInit {
   currentUser: User = new User();
   roleOptions = [
     { name: 'Admin', value: 'Admin', checked: false },
-    { name: 'Power user', value: 'Power user', checked: false },
+    { name: 'Power user', value: 'PowerUser', checked: false },
     { name: 'Patient', value: 'Patient', checked: false },
     { name: 'Doctor', value: 'Doctor', checked: false },
-    { name: 'BMA', value: 'BMA', checked: false },
+    { name: 'BMA', value: 'BmaSkill', checked: false },
   ];
+  selectedRoles = [];
   ngOnInit(): void {
     this.route.params.subscribe(p => this.getUser(p && p['id']));
   }
@@ -31,8 +32,12 @@ export class UserEditComponent implements OnInit {
   cancel() {
     this.location.back();
   }
+  checkboxChanged() {
+    this.selectedRoles = this.roleOptions.map((role) => role.checked && role.value).filter(item=>!!item)
+
+  }
   private createUser() {
-    this.currentUser.roles = this.roleOptions.map((role) => role.checked && role.value)
+    this.currentUser.roles = this.selectedRoles;
     this.service.createUser(this.currentUser).subscribe(user => {
       this.messages.add('Created successfully')
     }, (error) => {

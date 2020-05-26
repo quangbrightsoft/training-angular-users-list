@@ -1,14 +1,14 @@
 <a href="/users/edit/0">Create user</a>
 <div>
-  <input id="name" [(ngModel)]="searchQuery" placeholder="Search" />
+  <input id="name" [(ngModel)]="searchQuery" placeholder="Search by full name" />
   <button class="button" (click)="getUsers()">Search</button>
 </div>
 <mat-form-field>
-    <mat-label>Filter</mat-label>
-    <mat-select [formControl]="rolesControl" multiple [(value)]="selectedRoleFilter" (valueChange)="getUsers()">
-      <mat-option *ngFor="let role of roleOptions" [value]="role.name">{{role.name}}</mat-option>
-    </mat-select>
-  </mat-form-field>
+  <mat-label>Filter</mat-label>
+  <mat-select [formControl]="rolesControl" multiple [(value)]="selectedRoleFilter" (valueChange)="getUsers()">
+    <mat-option *ngFor="let role of roleOptions" [value]="role.value">{{role.name}}</mat-option>
+  </mat-select>
+</mat-form-field>
 <table class="users-datatable" matSort mat-table [dataSource]="dataSource" (matSortChange)="sortData($event)">
   <ng-container matColumnDef="email">
     <th mat-header-cell *matHeaderCellDef mat-sort-header="email"> Email </th>
