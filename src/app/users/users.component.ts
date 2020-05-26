@@ -4,6 +4,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { MessageService } from '../messages.service';
+import { FormControl } from '@angular/forms';
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
@@ -11,7 +12,15 @@ import { MessageService } from '../messages.service';
 })
 export class UsersComponent implements OnInit, AfterViewInit {
   columnsToDisplay: string[] = ['email', 'fullName', 'roles', 'actions'];
-
+  roleOptions = [
+    { name: 'Admin', value: 'Admin', checked: false },
+    { name: 'Power user', value: 'Power user', checked: false },
+    { name: 'Patient', value: 'Patient', checked: false },
+    { name: 'Doctor', value: 'Doctor', checked: false },
+    { name: 'BMA', value: 'BMA', checked: false },
+  ];
+  rolesControl = new FormControl();
+  selectedRoleFilter;
   pagingOptions = {
     currentPage: 0,
     pageSize: 10,
@@ -40,6 +49,11 @@ export class UsersComponent implements OnInit, AfterViewInit {
     if (this.sortingOptions.sortBy) {
       Object.assign
         (params, { descending: this.sortingOptions.desc, sortBy: this.sortingOptions.sortBy })
+    }
+
+    if (this.selectedRoleFilter) {
+      Object.assign
+        (params, { roles: this.selectedRoleFilter })
     }
     this.service.getUsers(params).subscribe(r => {
       this.dataSource.sort = this.sort;
