@@ -34,6 +34,25 @@
     <label for="medicalNote">Medical note: </label>
     <input id="medicalNote" [(ngModel)]="currentUser.medicalNote" placeholder="medicalNote" />
   </div>
+
+  <div *ngIf="selectedRoles.includes('Doctor') ">
+    <mat-form-field>
+      <mat-label>Skills</mat-label>
+      <mat-select [formControl]="formControl" multiple [(value)]="selectedSkills">
+        <mat-option *ngFor="let skill of skillOptions" [value]="skill.value">{{skill.name}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <p>Work hours</p>
+    <div>
+      <label for="startTime">Start time: </label>
+      <input id="startTime" [(ngModel)]="currentUser.workTime.startTime" placeholder="startTime" />
+    </div>
+    <div>
+      <label for="endTime">End time: </label>
+      <input id="endTime" [(ngModel)]="currentUser.workTime.endTime" placeholder="endTime" />
+    </div>
+  </div>
+
   <button (click)="save()">Save</button>
   <button (click)="cancel()">Cancel</button>
 </div>

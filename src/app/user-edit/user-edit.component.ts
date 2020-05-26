@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { User } from '../user';
 import { Location } from '@angular/common';
 import { MessageService } from '../messages.service';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-user-edit',
@@ -14,7 +15,32 @@ export class UserEditComponent implements OnInit {
 
   constructor(private messages: MessageService, private route: ActivatedRoute, private service: UserService, private location: Location) {
   }
-  currentUser: User = new User();
+  currentUser: User = {
+    createdAt: null,
+    deletedAt: null,
+    email: 'empty',
+    fullName: '',
+    id: 0,
+    isDeleted: false,
+    isDisabled: false,
+    leaves: [],
+    medicalNote: '',
+    personalId: '',
+    roles: [],
+    sex: '',
+    skillIds: [],
+    skills: [],
+    ssn: '',
+    updatedAt: null,
+    userName: null,
+    workTime: {
+      startTime: "08:00:00",
+      endTime: "08:00:00",
+      weekDays: [1, 2, 3, 4, 5]
+    }
+  };
+  formControl = new FormControl();
+
   roleOptions = [
     { name: 'Admin', value: 'Admin', checked: false },
     { name: 'Power user', value: 'PowerUser', checked: false },
@@ -22,7 +48,15 @@ export class UserEditComponent implements OnInit {
     { name: 'Doctor', value: 'Doctor', checked: false },
     { name: 'BMA', value: 'BmaSkill', checked: false },
   ];
+  skillOptions = [
+    { name: 'EB', value: 'EB', checked: false },
+    { name: 'ES', value: 'ES', checked: false },
+    { name: 'BP', value: 'BP', checked: false },
+    { name: 'HO', value: 'HO', checked: false },
+    { name: 'SP', value: 'SP', checked: false },
+  ];
   selectedRoles = [];
+  selectedSkills = [];
   ngOnInit(): void {
     this.route.params.subscribe(p => this.getUser(p && p['id']));
   }
@@ -33,7 +67,7 @@ export class UserEditComponent implements OnInit {
     this.location.back();
   }
   checkboxChanged() {
-    this.selectedRoles = this.roleOptions.map((role) => role.checked && role.value).filter(item=>!!item)
+    this.selectedRoles = this.roleOptions.map((role) => role.checked && role.value).filter(item => !!item)
 
   }
   private createUser() {
@@ -46,28 +80,5 @@ export class UserEditComponent implements OnInit {
     });
   }
   private getUser(id: string): void {
-    if (!id) {
-      this.currentUser = {
-        createdAt: null,
-        deletedAt: null,
-        email: 'empty',
-        fullName: '',
-        id: 0,
-        isDeleted: false,
-        isDisabled: false,
-        leaves: [],
-        medicalNote: '',
-        personalId: '',
-        roles: [],
-        sex: '',
-        skillIds: [],
-        skills: [],
-        ssn: '',
-        updatedAt: null,
-        userName: null,
-      };
-      return;
-    }
-
   }
 }

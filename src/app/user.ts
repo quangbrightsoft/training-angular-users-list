@@ -15,9 +15,14 @@ export class User {
   skills: []
   ssn: string
   updatedAt: string
-  userName:string
+  userName: string
+  workTime: WorkTime
 }
-
+export class WorkTime {
+  startTime: string
+  endTime: string
+  weekDays: number[]
+}
 export interface PagedData<T> {
   page: number;
   pageSize: number;
