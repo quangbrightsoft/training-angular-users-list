@@ -10,8 +10,9 @@ import { FormControl } from '@angular/forms';
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.scss']
 })
-export class UsersComponent implements OnInit, AfterViewInit {
+export class UsersComponent implements OnInit {
   columnsToDisplay: string[] = ['email', 'fullName', 'roles', 'actions'];
+
   roleOptions = [
     { name: 'Admin', value: 'Admin' },
     { name: 'Power user', value: 'PowerUser' },
@@ -19,6 +20,7 @@ export class UsersComponent implements OnInit, AfterViewInit {
     { name: 'Doctor', value: 'Doctor' },
     { name: 'BMA', value: 'BmaSkill' },
   ];
+
   rolesControl = new FormControl();
   selectedRoleFilter;
   pagingOptions = {
@@ -32,11 +34,12 @@ export class UsersComponent implements OnInit, AfterViewInit {
   }
   searchQuery: string;
   dataSource = new MatTableDataSource([]);
+
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
+
   constructor(private messages: MessageService, private service: UserService) { }
-  ngAfterViewInit(): void {
-  }
+
   getUsers(): void {
     let params = {
       page: (this.pagingOptions.currentPage + 1).toString(),
@@ -50,13 +53,11 @@ export class UsersComponent implements OnInit, AfterViewInit {
       Object.assign
         (params, { descending: this.sortingOptions.desc, sortBy: this.sortingOptions.sortBy })
     }
-
     if (this.selectedRoleFilter) {
       Object.assign
         (params, { roles: this.selectedRoleFilter })
     }
     this.service.getUsers(params).subscribe(r => {
-      this.dataSource.sort = this.sort;
       this.dataSource.data = r.items;
       this.pagingOptions.currentPage = r.page - 1;
       this.pagingOptions.pageSize = r.pageSize;
@@ -65,17 +66,13 @@ export class UsersComponent implements OnInit, AfterViewInit {
     );
   }
   ngOnInit(): void {
-
-    this.dataSource.sort = this.sort;
     this.getUsers();
   }
   changePage($event) {
     this.pagingOptions.currentPage = $event.pageIndex;
     this.pagingOptions.pageSize = $event.pageSize;
-
     this.pagingOptions.totalCount = $event.length;
     this.getUsers();
-
   }
   sortData(sort: Sort) {
     if (!sort.active || sort.direction === '') {
@@ -97,9 +94,4 @@ export class UsersComponent implements OnInit, AfterViewInit {
     }
     );
   }
-  @ViewChild(MatSort) set matSort(ms: MatSort) {
-    this.sort = ms;
-  }
-
-
 }
