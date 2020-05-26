@@ -1,36 +1,43 @@
-<a href="/users/edit/0">Create user</a>
-<div>
-  <input id="name" [(ngModel)]="searchQuery" placeholder="Search by full name" />
-  <button class="button" (click)="getUsers()">Search</button>
-</div>
-<mat-form-field>
-  <mat-label>Filter</mat-label>
-  <mat-select [formControl]="rolesControl" multiple [(value)]="selectedRoleFilter" (valueChange)="getUsers()">
-    <mat-option *ngFor="let role of roleOptions" [value]="role.value">{{role.name}}</mat-option>
-  </mat-select>
-</mat-form-field>
-<table class="users-datatable" matSort mat-table [dataSource]="dataSource" (matSortChange)="sortData($event)">
-  <ng-container matColumnDef="email">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header="email"> Email </th>
-    <td mat-cell *matCellDef="let element"> {{element.email}} </td>
-  </ng-container>
-  <ng-container matColumnDef="fullName">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header="fullName"> Full name </th>
-    <td mat-cell *matCellDef="let element"> {{element.fullName}} </td>
-  </ng-container>
-  <ng-container matColumnDef="roles">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header="roles"> Roles </th>
-    <td mat-cell *matCellDef="let element"> {{element.roles}} </td>
-  </ng-container>
-  <ng-container matColumnDef="actions">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header> Actions </th>
-    <td *matCellDef="let row">
-      <button mat-button (click)="deleteRow(row)">Delete</button>
-    </td>
-  </ng-container>
-  <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
-  <tr mat-row *matRowDef="let row; columns: columnsToDisplay"></tr>
-</table>
+<mat-card>
 
-<mat-paginator [length]="pagingOptions.totalCount" [pageSize]="pagingOptions.pageSize"
-  [pageSizeOptions]="[5, 10, 25, 100]" (page)="changePage($event)"></mat-paginator>
+  <div>
+    <button mat-button (click)="getUsers()" color="primary" (click)="goToUrl('/users/edit/0')">Create new</button>
+    <mat-form-field>
+      <mat-label>Search</mat-label>
+      <input matInput placeholder="Search by full name" [(ngModel)]="searchQuery">
+    </mat-form-field>
+    <button mat-button (click)="getUsers()" color="primary">Search</button>
+    <mat-form-field>
+      <mat-label>Filter</mat-label>
+      <mat-select [formControl]="rolesControl" multiple [(value)]="selectedRoleFilter" (valueChange)="getUsers()">
+        <mat-option *ngFor="let role of roleOptions" [value]="role.value">{{role.name}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <table class="users-datatable" matSort mat-table [dataSource]="dataSource" (matSortChange)="sortData($event)">
+    <ng-container matColumnDef="email">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="email"> Email </th>
+      <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+    </ng-container>
+    <ng-container matColumnDef="fullName">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="fullName"> Full name </th>
+      <td mat-cell *matCellDef="let element"> {{element.fullName}} </td>
+    </ng-container>
+    <ng-container matColumnDef="roles">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="roles"> Roles </th>
+      <td mat-cell *matCellDef="let element"> {{element.roles}} </td>
+    </ng-container>
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Actions </th>
+      <td *matCellDef="let row">
+        <button mat-button color="warn" (click)="deleteRow(row)">Delete</button>
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+    <tr mat-row *matRowDef="let row; columns: columnsToDisplay"></tr>
+  </table>
+
+  <mat-paginator [length]="pagingOptions.totalCount" [pageSize]="pagingOptions.pageSize"
+    [pageSizeOptions]="[5, 10, 25, 100]" (page)="changePage($event)"></mat-paginator>
+
+</mat-card>

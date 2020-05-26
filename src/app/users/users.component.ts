@@ -5,6 +5,7 @@ import { MatSort, Sort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { MessageService } from '../messages.service';
 import { FormControl } from '@angular/forms';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
@@ -38,8 +39,11 @@ export class UsersComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(private messages: MessageService, private service: UserService) { }
+  constructor(private router: Router, private messages: MessageService, private service: UserService) { }
 
+  goToUrl(url: string) {
+    this.router.navigateByUrl(url);
+  }
   getUsers(): void {
     let params = {
       page: (this.pagingOptions.currentPage + 1).toString(),
