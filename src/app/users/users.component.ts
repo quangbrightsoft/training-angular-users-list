@@ -99,9 +99,10 @@ export class UsersComponent implements OnInit {
   openDeleteDialog(row) {
 
     const dialogRef = this.dialog.open(DialogComponent, {
-      width: '250px',
+      width: '450px',
       data: {
         title: 'Delete ' + row.email + '?',
+        text: 'Are you sure you want to delete this user?',
         actions: []
       }
     });
