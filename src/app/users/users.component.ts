@@ -6,6 +6,10 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MessageService } from '../messages.service';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
+
+import { MatDialog } from '@angular/material/dialog';
+import { DialogComponent } from '../dialog/dialog.component';
+import { MatButton } from '@angular/material/button';
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
@@ -39,7 +43,7 @@ export class UsersComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(private router: Router, private messages: MessageService, private service: UserService) { }
+  constructor(public dialog: MatDialog, private router: Router, private messages: MessageService, private service: UserService) { }
 
   goToUrl(url: string) {
     this.router.navigateByUrl(url);
@@ -92,10 +96,25 @@ export class UsersComponent implements OnInit {
 
     this.getUsers();
   }
-  deleteRow(row) {
-    this.service.delete(row.id).subscribe(r => {
-      this.messages.add('Delete successful')
-    }
-    );
+  openDeleteDialog(row) {
+
+    const dialogRef = this.dialog.open(DialogComponent, {
+      width: '250px',
+      data: {
+        title: 'Delete ' + row.email + '?',
+        actions: []
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      result === true && this.service.delete(row.id).subscribe(r => {
+        this.messages.add('Delete successful')
+        this.getUsers();
+      }
+      );
+    });
+
+
   }
 }

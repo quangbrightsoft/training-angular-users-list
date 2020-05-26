@@ -30,7 +30,7 @@
     <ng-container matColumnDef="actions">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Actions </th>
       <td *matCellDef="let row">
-        <button mat-button color="warn" (click)="deleteRow(row)">Delete</button>
+        <button mat-button color="warn" (click)="openDeleteDialog(row)">Delete</button>
       </td>
     </ng-container>
     <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
@@ -38,6 +38,6 @@
   </table>
 
   <mat-paginator [length]="pagingOptions.totalCount" [pageSize]="pagingOptions.pageSize"
-    [pageSizeOptions]="[5, 10, 25, 100]" (page)="changePage($event)"></mat-paginator>
+    [pageSizeOptions]="[10, 30, 50, 100]" (page)="changePage($event)"></mat-paginator>
 
 </mat-card>

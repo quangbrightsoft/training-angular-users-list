@@ -18,7 +18,7 @@ export class UserEditComponent implements OnInit {
   currentUser: User = {
     createdAt: null,
     deletedAt: null,
-    email: 'empty',
+    email: '',
     fullName: '',
     id: 0,
     isDeleted: false,
