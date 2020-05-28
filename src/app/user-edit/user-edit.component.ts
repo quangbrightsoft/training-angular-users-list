@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { User } from '../user';
 import { Location } from '@angular/common';
 import { MessageService } from '../messages.service';
-import { FormControl } from '@angular/forms';
+import { FormControl, Validators, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-user-edit',
@@ -39,8 +39,11 @@ export class UserEditComponent implements OnInit {
       weekDays: [1, 2, 3, 4, 5]
     }
   };
-  formControl = new FormControl();
-
+  selectedSkills = [];
+  formGroup = new FormGroup({
+    email: new FormControl('', [Validators.required, Validators.email])
+  })
+  selectedSkillsformControl = new FormControl(this.selectedSkills, [Validators.required]);
   roleOptions = [
     { name: 'Admin', value: 'Admin', checked: false },
     { name: 'Power user', value: 'PowerUser', checked: false },
@@ -56,7 +59,6 @@ export class UserEditComponent implements OnInit {
     { name: 'SP', value: 'SP', checked: false },
   ];
   selectedRoles = [];
-  selectedSkills = [];
   ngOnInit(): void {
     this.route.params.subscribe(p => this.getUser(p && p['id']));
   }
@@ -80,5 +82,13 @@ export class UserEditComponent implements OnInit {
     });
   }
   private getUser(id: string): void {
+  }
+
+  getErrorMessage(formControl: FormControl) {
+    if (formControl.hasError('required')) {
+      return 'You must enter a value';
+    }
+
+    return formControl.hasError('email') ? 'Not a valid email' : '';
   }
 }

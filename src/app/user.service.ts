@@ -43,8 +43,4 @@ export class UserService {
       params: { id: id }
     });
   }
-
-  private log(message: string) {
-    this.messageService.add(`HeroService: ${message}`);
-  }
 }
