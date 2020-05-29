@@ -27,7 +27,9 @@ export class UsersComponent implements OnInit {
   ];
 
   rolesControl = new FormControl();
+
   selectedRoleFilter;
+  
   pagingOptions = {
     currentPage: 0,
     pageSize: 10,
@@ -39,9 +41,6 @@ export class UsersComponent implements OnInit {
   }
   searchQuery: string;
   dataSource = new MatTableDataSource([]);
-
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(public dialog: MatDialog, private router: Router, private messages: MessageService, private service: UserService) { }
 
@@ -115,7 +114,5 @@ export class UsersComponent implements OnInit {
       }
       );
     });
-
-
   }
 }

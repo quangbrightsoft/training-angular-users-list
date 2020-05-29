@@ -9,6 +9,8 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 })
 export class UserService {
   private userListUrl = `https://localhost:5001/api/user/list`;
+  private getUserUrl = `https://localhost:5001/api/user/get`;
+  private updateUserUrl = `https://localhost:5001/api/user/update`;
   private createUserUrl = `https://localhost:5001/api/user/create`;
   private deleteUserUrl = `https://localhost:5001/api/user/delete`;
   constructor(private http: HttpClient, private messageService: MessageService) { }
@@ -23,7 +25,26 @@ export class UserService {
       params: params
     });
   }
-
+  getUser(id: string): Observable<User> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIyNGE1NzY5Mi00MDA5LTQ2NDYtODRkOS0yZDMzMWI4MTgwYmUiLCJzdWIiOiJkZXZlbG9wZXIuYnJpZ2h0c29mdEBnbWFpbC5jb20iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJBZG1pbiIsImV4cCI6MTYyMTYwNTQ2MSwiaXNzIjoiQnJpZ2h0c29mdC5FSGVhcnRCb29raW5nIiwiYXVkIjoiQnJpZ2h0c29mdC5FSGVhcnRCb29raW5nIn0.9ix0zQ2lks9zcHvXHHgJGFtNz91FCO7ZXFBzZtr30Fw'
+    })
+    return this.http.get<User>(this.getUserUrl, {
+      headers: headers,
+      params: { id: id }
+    });
+  }
+  updateUser(user: User): Observable<User> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIyNGE1NzY5Mi00MDA5LTQ2NDYtODRkOS0yZDMzMWI4MTgwYmUiLCJzdWIiOiJkZXZlbG9wZXIuYnJpZ2h0c29mdEBnbWFpbC5jb20iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJBZG1pbiIsImV4cCI6MTYyMTYwNTQ2MSwiaXNzIjoiQnJpZ2h0c29mdC5FSGVhcnRCb29raW5nIiwiYXVkIjoiQnJpZ2h0c29mdC5FSGVhcnRCb29raW5nIn0.9ix0zQ2lks9zcHvXHHgJGFtNz91FCO7ZXFBzZtr30Fw'
+    })
+    return this.http.put<User>(this.updateUserUrl, user, {
+      headers: headers,
+      params: { id: user.id.toString() }
+    });
+  }
   createUser(user: User): Observable<User> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',

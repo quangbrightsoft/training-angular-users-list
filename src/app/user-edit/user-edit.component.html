@@ -6,7 +6,7 @@
       <mat-label>Email</mat-label>
       <input required email matInput id="email" [formControl]="formGroup.controls.email" [(ngModel)]="currentUser.email"
         placeholder="email" />
-      <mat-error *ngIf="formGroup.controls.email.invalid">{{getErrorMessage(formGroup.controls.email)}}</mat-error>
+      <mat-error *ngIf="formGroup.controls.email.invalid">{{getErrorMessage(formGroup.controls.email )}}</mat-error>
     </mat-form-field><br>
     <mat-form-field>
       <mat-label>Full name</mat-label>
@@ -23,7 +23,7 @@
           [(ngModel)]="option.checked"> {{option.name}}</mat-checkbox>
       </div>
     </div>
-    <div *ngIf="selectedRoles.includes('Patient') ">
+    <div *ngIf="currentUser.roles.includes('Patient') ">
       <mat-form-field>
         <mat-label>SSN</mat-label>
         <input matInput id="ssn" [(ngModel)]="currentUser.ssn" placeholder="ssn" />
@@ -34,21 +34,25 @@
       </mat-form-field><br>
     </div>
 
-    <div *ngIf="selectedRoles.includes('Doctor') ">
+    <div *ngIf="currentUser.roles.includes('Doctor') ">
       <mat-form-field>
         <mat-label>Skills</mat-label>
-        <mat-select [formControl]="formControl" multiple [(value)]="selectedSkills">
+        <mat-select required [formControl]="selectedSkillsformControl" multiple>
           <mat-option *ngFor="let skill of skillOptions" [value]="skill.value">{{skill.name}}</mat-option>
         </mat-select>
+        <mat-error *ngIf="!selectedSkillsformControl.hasError('required')">
+          {{getErrorMessage(selectedSkillsformControl)}}</mat-error>
       </mat-form-field>
       <p>Work hours</p>
       <mat-form-field>
         <mat-label>Start time</mat-label>
-        <input matInput id="startTime" [(ngModel)]="currentUser.workTime.startTime" placeholder="startTime" />
+        <input matInput id="startTime" [(ngModel)]="currentUser.workTime && currentUser.workTime.startTime"
+          placeholder="startTime" />
       </mat-form-field><br>
       <mat-form-field>
         <mat-label>End time</mat-label>
-        <input matInput id="endTime" [(ngModel)]="currentUser.workTime.endTime" placeholder="endTime" />
+        <input matInput id="endTime" [(ngModel)]="currentUser.workTime && currentUser.workTime.endTime"
+          placeholder="endTime" />
       </mat-form-field><br>
     </div>
 

@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { User } from '../user';
 import { Location } from '@angular/common';
 import { MessageService } from '../messages.service';
-import { FormControl, Validators, FormGroup } from '@angular/forms';
+import { FormControl, Validators, FormGroup, AbstractControl } from '@angular/forms';
 
 @Component({
   selector: 'app-user-edit',
@@ -58,22 +58,35 @@ export class UserEditComponent implements OnInit {
     { name: 'HO', value: 'HO', checked: false },
     { name: 'SP', value: 'SP', checked: false },
   ];
-  selectedRoles = [];
+  currentUserId: string;
   ngOnInit(): void {
-    this.route.params.subscribe(p => this.getUser(p && p['id']));
+    this.route.params.subscribe(p => {
+      this.currentUserId = p && p['id'];
+      this.getUser(this.currentUserId);
+    });
   }
   save() {
-    this.createUser();
+    if (this.currentUserId) {
+      this.updateUser();
+    } else {
+      this.createUser();
+    }
   }
   cancel() {
     this.location.back();
   }
   checkboxChanged() {
-    this.selectedRoles = this.roleOptions.map((role) => role.checked && role.value).filter(item => !!item)
+    this.currentUser.roles = this.roleOptions.map((role) => role.checked && role.value).filter(item => !!item)
+  }
+  private updateUser() {
+    this.service.updateUser(this.currentUser).subscribe(user => {
+      this.messages.add('Updated successfully')
+    }, (error) => {
+      this.messages.add('Failed' + error.error)
 
+    });
   }
   private createUser() {
-    this.currentUser.roles = this.selectedRoles;
     this.service.createUser(this.currentUser).subscribe(user => {
       this.messages.add('Created successfully')
     }, (error) => {
@@ -82,9 +95,14 @@ export class UserEditComponent implements OnInit {
     });
   }
   private getUser(id: string): void {
+    this.service.getUser(id).subscribe(user => {
+      this.currentUser = user;
+    }, (error) => {
+      this.messages.add('Failed' + error.error)
+    });
   }
 
-  getErrorMessage(formControl: FormControl) {
+  getErrorMessage(formControl: AbstractControl) {
     if (formControl.hasError('required')) {
       return 'You must enter a value';
     }
